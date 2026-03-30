@@ -13,6 +13,10 @@ This is the Google Chrome extension for Universal Wish List, which allows you to
 
 The extension is now cloned, you can access it from the puzzle icon in the top right and, optionally, can pin it for easy access.
 
+## Loading Changes
+
+In `chrome://extensions` there is a reload button on the panel for this extension. Click it to reload the extension to match any changes made in this directory.
+
 ## Sources
 
 - [Hello World extension | Get started | Chrome for Developers](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world)
