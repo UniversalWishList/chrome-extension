@@ -19,6 +19,11 @@ The extension is now cloned, you can access it from the puzzle icon in the top r
 
 In `chrome://extensions` there is a reload button on the panel for this extension. Click it to reload the extension to match any changes made in this directory.
 
+## Dev Notes
+
+- View the console log by opening the popup window, right clicking it and selecting **Inspect**. Then select the **Console** panel from the top.
+- If there's an error, an **Error** button will show up in `chrome://extensions`. If you click it you can see details about the errors.
+
 ## Sources
 
 - [Hello World extension | Get started | Chrome for Developers](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world)
