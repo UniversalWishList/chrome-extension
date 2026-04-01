@@ -1,7 +1,7 @@
 {
-    "name": "Hello Extensions",
+    "name": "Universal Wish List",
     "version": "1.0",
-    "description": "Hello World Extension",
+    "description": "An extension for adding items to lists in Universal Wish List",
     "permissions": ["activeTab"],
     "background": {
         "service_worker": "service-worker.js"
