@@ -1,3 +1,3 @@
 chrome.runtime.onInstalled.addListener(() => {
-  console.log('Hello world!');
+    console.log("Started the Universal Wish List extension.")
 });
