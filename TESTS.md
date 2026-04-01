@@ -1,6 +1,6 @@
 # Test Documentation
 
-Unit testing for this extension is done through [Puppeteer](https://pptr.dev/), a JavaScript testing framework which provides an API to control Chrome or Firefox. By default, Puppeteer includes a compatible version of Chrome in its installation.
+Unit testing for this extension is done through [Jest](https://jestjs.io/), a Javascript testing framework, and [Puppeteer](https://pptr.dev/), a JavaScript library which provides an API to control Chrome or Firefox. By default, Puppeteer includes a compatible version of Chrome in its installation.
 
 ## Install Dependencies
 
