@@ -3,6 +3,7 @@
 const puppeteer = require('puppeteer');
 
 const EXTENSION_PATH = '..';
+const POPUP_FILE = 'popup.html'
 
 let browser;
 let worker;
@@ -36,9 +37,9 @@ async function evaluateOrTimeout(fn, ms, error_msg = 'Operation timed out') {
 async function getPopupPage(worker, browser) {
     await worker.evaluate(() => chrome.action.openPopup());
     const popupTarget = await browser.waitForTarget(
-        // Assumes that there is only one page with the URL ending with popup.html
+        // Assumes that there is only one page with the URL ending with POPUP_FILE
         // and that is the popup created by the extension.
-        target => target.type() === 'page' && target.url().endsWith('popup.html'),
+        target => target.type() === 'page' && target.url().endsWith(POPUP_FILE),
     );
     return popupTarget.asPage();
 };
@@ -81,10 +82,25 @@ test('Chrome opens the correct pop-up window', async () => {
     // check that the correct page opened in the pop-up window
     await expect(
         evaluateOrTimeout(
-            // get the page in the browser context that ends with popup.html
-            browser.waitForTarget(target => target.type() === 'page' && target.url().endsWith('popup.html')),
+            // get the page in the browser context that ends with POPUP_FILE
+            browser.waitForTarget(target => target.type() === 'page' && target.url().endsWith(POPUP_FILE)),
             3000, 'Failed to find pop-up window')
     ).resolves.not.toThrow();
+});
+
+test('Pop-up window has at least 300x200px', async () => {
+    const popupPage = await getPopupPage(worker, browser);
+
+    // get the dimensions of the popup window
+    const dimensions = await popupPage.evaluate(() => {
+        return {
+            width: window.innerWidth,
+            height: window.innerHeight
+        };
+    });
+
+    expect(dimensions.width).toBeGreaterThanOrEqual(300);
+    expect(dimensions.height).toBeGreaterThanOrEqual(200);
 });
 
 test('The pop-up page has the correct header', async () => {
