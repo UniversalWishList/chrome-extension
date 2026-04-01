@@ -15,7 +15,7 @@ let worker;
  * @param {number} ms The number of milliseconds to wait before timing out.
  * @param {string} error_msg The error message to return if the timeout expires.
  * 
- * @returns A promise with the result of fn or, if ms seconds pass, an error with error_msg
+ * @returns A promise with the result of fn or, if ms seconds pass, an error with error_msg.
 */
 async function evaluateOrTimeout(fn, ms, error_msg = 'Operation timed out') {
     // define a Promise which rejects after ms milliseconds
@@ -25,9 +25,23 @@ async function evaluateOrTimeout(fn, ms, error_msg = 'Operation timed out') {
     return Promise.race([fn, timeout_promise]);
 };
 
-// const getPopupPage = async(worker, browser) => {
-
-// };
+/**
+ * Get the pop-up page for the extension.
+ * 
+ * @param worker The extension service worker.
+ * @param browser The browser class.
+ * 
+ * @returns {Promise} A promise with the page in the pop-up window.
+*/
+async function getPopupPage(worker, browser) {
+    await worker.evaluate(() => chrome.action.openPopup());
+    const popupTarget = await browser.waitForTarget(
+        // Assumes that there is only one page with the URL ending with popup.html
+        // and that is the popup created by the extension.
+        target => target.type() === 'page' && target.url().endsWith('popup.html'),
+    );
+    return popupTarget.asPage();
+};
 
 beforeEach(async () => {
     browser = await puppeteer.launch({
@@ -74,5 +88,6 @@ test('Chrome opens the correct pop-up window', async () => {
 });
 
 test('The pop-up page has the correct header', async () => {
-    // open the pop-up window and get the pop-up page
+    const popupPage = await getPopupPage(worker, browser);
+    expect(await popupPage.content()).toContain('<h1>Universal Wish List</h1>');
 });
