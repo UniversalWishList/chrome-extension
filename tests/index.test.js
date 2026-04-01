@@ -103,6 +103,12 @@ test('Pop-up window has at least 300x200px', async () => {
     expect(dimensions.height).toBeGreaterThanOrEqual(200);
 });
 
+test('Pop-up window has the correct page URL', async () => {
+    const popupPage = await getPopupPage(worker, browser);
+    const url = popupPage.url();
+    expect(url).toContain(POPUP_FILE);
+});
+
 test('The pop-up page has the correct header', async () => {
     const popupPage = await getPopupPage(worker, browser);
     expect(await popupPage.content()).toContain('Universal Wish List');
