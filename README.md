@@ -27,3 +27,4 @@ In `chrome://extensions` there is a reload button on the panel for this extensio
 ## Sources
 
 - [Hello World extension | Get started | Chrome for Developers](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world)
+- [Permissions | Chrome for Developers](https://developer.chrome.com/docs/extensions/reference/permissions-list)
