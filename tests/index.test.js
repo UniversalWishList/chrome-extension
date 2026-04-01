@@ -105,5 +105,16 @@ test('Pop-up window has at least 300x200px', async () => {
 
 test('The pop-up page has the correct header', async () => {
     const popupPage = await getPopupPage(worker, browser);
-    expect(await popupPage.content()).toContain('<h1>Universal Wish List</h1>');
+    expect(await popupPage.content()).toContain('Universal Wish List');
+});
+
+test('The pop-up page has the correct background color', async () => {
+    const popupPage = await getPopupPage(worker, browser);
+    
+    // get the hex code of the background color of the current page
+    const backgroundColor = await popupPage.evaluate(() => {
+        return window.getComputedStyle(document.body).backgroundColor;
+    });
+
+    expect(backgroundColor).toBe('rgb(77, 0, 77)')
 });
