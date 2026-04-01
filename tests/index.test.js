@@ -7,14 +7,14 @@ const EXTENSION_PATH = '..';
 let browser;
 let worker;
 
-const evaluateOrTimeout = async (worker, fn, ms) => {
+const evaluateOrTimeout = async (fn, ms, error_msg = 'Operation timed out') => {
     // define a Promise which rejects after ms milliseconds
     const timeout_promise = new Promise((_, reject) => {
-        setTimeout(() => reject(new Error('openPopup timed out')), ms)
+        setTimeout(() => reject(new Error(error_msg)), ms)
     });
 
-    // return a Promise with the result of worker.evaluate(fn) or, if ms milliseconds pass, an error
-    return Promise.race([worker.evaluate(fn), timeout_promise]);
+    // return a Promise with the result of fn or, if ms milliseconds pass, an error
+    return Promise.race([fn, timeout_promise]);
 };
 
 beforeEach(async () => {
@@ -47,6 +47,21 @@ is correct enough that chrome knows there is supposed to be a pop-up
 */
 test('Chrome opens a pop-up window', async () => {
     await expect(
-        evaluateOrTimeout(worker, () => chrome.action.openPopup(), 3000)
+        evaluateOrTimeout(worker.evaluate(() => chrome.action.openPopup()), 3000, 'Opening pop-up timed out')
     ).resolves.not.toThrow();
+});
+
+/*
+try to open the extension popup and check that the correct page was loaded
+*/
+test('Chrome opens the correct pop-up window', async () => {
+    // open the pop-up window
+    await worker.evaluate(() => chrome.action.openPopup());
+    // check that the correct page opened in the pop-up window
+    await expect(
+        evaluateOrTimeout(
+            // get the page in the browser context that ends with popup.html
+            browser.waitForTarget(target => target.type() === 'page' && target.url().endsWith('popup.html')),
+            3000, 'Failed to find pop-up window')
+        ).resolves.not.toThrow();
 });
