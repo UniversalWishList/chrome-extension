@@ -141,7 +141,7 @@ test('The pop-up page has a button', async () => {
 test('Clicking the button changes the text of the button', async () => {
     const popupPage = await getPopupPage(worker, browser);
 
-    // get the button element and its text
+    // get the button element's text
     const buttonText = await popupPage.evaluate(() => {
         const btn = document.querySelector('button');
         return btn.innerText;
@@ -157,4 +157,26 @@ test('Clicking the button changes the text of the button', async () => {
         return btn.innerText;
     });
     expect(buttonText).not.toBe(newButtonText);
+});
+
+test('Clicking the button disables it', async () => {
+    const popupPage = await getPopupPage(worker, browser);
+
+    // check that the button is enabled
+    const buttonDisabled = await popupPage.evaluate(() => {
+        const btn = document.querySelector('button');
+        return btn.disabled;
+    });
+    expect(buttonDisabled).toBeFalsy();
+
+    // click the button
+    await popupPage.waitForSelector('button[id="addItemToList"]');
+    await popupPage.click('button[id="addItemToList"]');
+
+    // check that the button is disabled
+    const newButtonDisabled = await popupPage.evaluate(() => {
+        const btn = document.querySelector('button');
+        return btn.disabled;
+    });
+    expect(newButtonDisabled).toBeTruthy();
 });
