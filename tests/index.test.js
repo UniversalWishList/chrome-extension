@@ -111,7 +111,11 @@ test('Pop-up window has the correct page URL', async () => {
 
 test('The pop-up page has the correct header', async () => {
     const popupPage = await getPopupPage(worker, browser);
-    expect(await popupPage.content()).toContain('Universal Wish List');
+    const headerExists = await popupPage.evaluate(() => {
+        const header = document.querySelector('h1'); // Adjust selector as needed
+        return header && header.textContent.includes('Universal Wish List');
+    });
+    expect(headerExists).toBe(true);
 });
 
 test('The pop-up page has the correct background color', async () => {
@@ -132,4 +136,25 @@ test('The pop-up page has a button', async () => {
         return document.querySelector('button') !== null;
     });
     expect(hasButton).toBe(true);
+});
+
+test('Clicking the button changes the text of the button', async () => {
+    const popupPage = await getPopupPage(worker, browser);
+
+    // get the button element and its text
+    const buttonText = await popupPage.evaluate(() => {
+        const btn = document.querySelector('button');
+        return btn.innerText;
+    });
+
+    // click the button
+    await popupPage.waitForSelector('button[id="addItemToList"]');
+    await popupPage.click('button[id="addItemToList"]');
+
+    // check that the button now has different text
+    const newButtonText = await popupPage.evaluate(() => {
+        const btn = document.querySelector('button');
+        return btn.innerText;
+    });
+    expect(buttonText).not.toBe(newButtonText);
 });
