@@ -124,3 +124,12 @@ test('The pop-up page has the correct background color', async () => {
 
     expect(backgroundColor).toBe('rgb(77, 0, 77)')
 });
+
+test('The pop-up page has a button', async () => {
+    const popupPage = await getPopupPage(worker, browser);
+    // check if a button element exists in the popup page
+    const hasButton = await popupPage.evaluate(() => {
+        return document.querySelector('button') !== null;
+    });
+    expect(hasButton).toBe(true);
+});
