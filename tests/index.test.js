@@ -180,3 +180,24 @@ test('Clicking the button disables it', async () => {
     });
     expect(newButtonDisabled).toBeTruthy();
 });
+
+test('Clicking the button logs the current URL', async () => {
+    // navigate to a browser page
+    const url = 'https://example.com'
+    const page = await browser.newPage();
+    await page.goto(url);
+
+    const popupPage = await getPopupPage(worker, browser);
+
+    // register to capture console messages
+    const consoleMessages = [];
+    popupPage.on('console', msg => {
+        consoleMessages.push(msg.text());
+    });
+
+    // click the button
+    await popupPage.waitForSelector('button[id="addItemToList"]');
+    await popupPage.click('button[id="addItemToList"]');
+
+    expect(consoleMessages[0]).toContain(url);
+});
