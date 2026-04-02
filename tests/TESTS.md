@@ -10,6 +10,14 @@ Unit testing for this extension is done through [Jest](https://jestjs.io/), a Ja
 npm install
 ```
 
+## Running Tests
+
+The following command runs all automated tests:
+
+```bash
+npm start
+```
+
 ## Sources
 
 - [Test Chrome Extensions with Puppeteer | Chrome for Developers](https://developer.chrome.com/docs/extensions/how-to/test/puppeteer) (code doesn't work)

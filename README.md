@@ -2,7 +2,7 @@
 
 This is the Google Chrome extension for Universal Wish List, which allows you to add items to your wish lists without leaving the shopping website.
 
-*Note: This extension is in development and is currently incomplete.*
+*Note: This extension is in development and currently stubs out any API access.*
 
 ## Installation
 
