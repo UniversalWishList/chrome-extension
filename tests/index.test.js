@@ -201,3 +201,12 @@ test('Clicking the button logs the current URL', async () => {
 
     expect(consoleMessages[0]).toContain(url);
 });
+
+test('The pop-up page has a drop-down menu', async () => {
+    const popupPage = await getPopupPage(worker, browser);
+    // check if a select element exists in the popup page
+    const hasSelect = await popupPage.evaluate(() => {
+        return document.querySelector('select') !== null;
+    });
+    expect(hasSelect).toBe(true);
+});
