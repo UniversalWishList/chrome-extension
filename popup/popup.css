@@ -7,3 +7,8 @@ body {
     background-color: #4d004d;
     color: white;
 }
+.list-dropdown {
+    width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
