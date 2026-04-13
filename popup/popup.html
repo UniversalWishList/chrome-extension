@@ -6,7 +6,9 @@
         <h1><u>Universal Wish List</u></h1>
         <button type="button" id="addItemToList">Add item to list</button>
         <script src="addItemToList.js"></script>
-        <select class="list-dropdown">
+        <select class="list-dropdown" name="lists" id="list-select">
+            <!-- value is what gets submitted to the server, text between the option tags is what gets displayed -->
+            <!-- an option can be selected by default by adding the 'selected' attribute -->
             <option value="option1">Option 1</option>
             <option value="option2">Option 2</option>
         </select>
