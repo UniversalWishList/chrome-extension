@@ -1,0 +1,1 @@
+console.log("Attempting to update the dropdown list from the server.");

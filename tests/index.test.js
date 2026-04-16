@@ -138,6 +138,15 @@ test('The pop-up page has a button', async () => {
     expect(hasButton).toBe(true);
 });
 
+test('The pop-up page runs the addItemToList.js script when it loads', async () => {
+    const popupPage = await getPopupPage(worker, browser);
+    // check if the addItemToList.js script has been loaded
+    const hasScript = await popupPage.evaluate(() => {
+        return document.querySelector('script[src="addItemToList.js"]') !== null;
+    });
+    expect(hasScript).toBe(true);
+});
+
 test('Clicking the button changes the text of the button', async () => {
     const popupPage = await getPopupPage(worker, browser);
 
@@ -199,7 +208,7 @@ test('Clicking the button logs the current URL', async () => {
     await popupPage.waitForSelector('button[id="addItemToList"]');
     await popupPage.click('button[id="addItemToList"]');
 
-    expect(consoleMessages[0]).toContain(url);
+    expect(consoleMessages.some(msg => msg.includes(url))).toBe(true);
 });
 
 test('The pop-up page has a drop-down menu', async () => {
@@ -209,4 +218,13 @@ test('The pop-up page has a drop-down menu', async () => {
         return document.querySelector('select') !== null;
     });
     expect(hasSelect).toBe(true);
+});
+
+test('The pop-up page runs the updateListDropdown.js script when it loads', async () => {
+    const popupPage = await getPopupPage(worker, browser);
+    // check if the updateListDropdown.js script has been loaded
+    const hasScript = await popupPage.evaluate(() => {
+        return document.querySelector('script[src="updateListDropdown.js"]') !== null;
+    });
+    expect(hasScript).toBe(true);
 });
