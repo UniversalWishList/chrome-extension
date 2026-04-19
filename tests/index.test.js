@@ -49,6 +49,8 @@ beforeEach(async () => {
         // Set headless to 'new' to hide Chrome if running as part of an automated build.
         headless: 'new',
         pipe: true,
+        // **Harry** so testing can work with GITHUB ACTIONS CI (Feel free to remove if necessary)
+        args: ['--no-sandbox'],
         enableExtensions: [EXTENSION_PATH]
     });
 
