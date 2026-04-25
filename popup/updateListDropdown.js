@@ -4,7 +4,7 @@
 async function getWishLists() {
     // stubbed out getLists function
     try {
-        const response = await chrome.runtime.sendMessage({greeting: "hello"});
+        const response = await chrome.runtime.sendMessage({action: 'fetchWishLists'});
         console.log(response);
     } catch (error) {
         console.error('Message sending failed:', error);
