@@ -1,4 +1,10 @@
-
+/**
+ * Fetch a list of the user's wish lists from the server and store them in memory.
+ */
+async function fetchWishLists() {
+    console.log("Fetching wish lists from the server."); //DEBUG
+    await new Promise(resolve => setTimeout(resolve, 2000));  // STUBBED
+}
 
 // register a listener for when the extension is installed
 chrome.runtime.onInstalled.addListener(() => {
@@ -16,7 +22,7 @@ chrome.runtime.onMessage.addListener(async function(message, sender, sendRespons
 //   return {statusCode: response.status};
     if (message.action === 'fetchWishLists') {
         // fetch wish lists from the server
-        console.log("Fetching wish lists from the server.");
+        console.log("Fetching wish lists from the server."); //STUBBED
         sendResponse({status: "fetching"});
         return true;
     } else {
