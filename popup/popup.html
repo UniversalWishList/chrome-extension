@@ -15,7 +15,12 @@
         </select>
         <script src="updateListDropdown.js"></script>  <!-- run the updateListDropdown.js script -->
         <br><br>
-        <button type="button" id="openOptions">Settings / API Key</button>
-        <script src="openOptions.js"></script>
+        <label>
+            API key:
+        <input id="apiKey" type="password" autocomplete="off">
+        </label>
+        <button type="button" id="saveApiKey">Save API Key</button>
+        <span id="apiKeyStatus"></span>
+        <script src="popupStorage.js"></script>
     </body>
 </html>
