@@ -15,12 +15,11 @@ async function triggerFetchWishLists() {
  * Get the wish lists stored in memory and return them.
  */
 async function getWishLists() {
-    const wishLists = [];
-
-    // push fetched wish lists to the list
-    wishLists.push('birthday');
-    wishLists.push('mom');
-    wishLists.push('christmas');
+    let wishLists = {
+        1: 'birthday',
+        2: 'mom',
+        3: 'christmas'
+    };
 
     return wishLists;
 }
@@ -39,10 +38,10 @@ async function updateListDropdown() {
     while (dropdown.options.length > 0) {
         dropdown.remove(0);
     }
-    for (var i = 0; i < wishLists.length; i++) {
+    for (const id in wishLists) {
         let newOption = document.createElement('option');
-        newOption.value = wishLists[i];
-        newOption.text = wishLists[i];
+        newOption.value = id;
+        newOption.text = wishLists[id];
         dropdown.appendChild(newOption);
     }
 }
