@@ -2,7 +2,7 @@
     "name": "Universal Wish List",
     "version": "1.0",
     "description": "An extension for adding items to lists in Universal Wish List",
-    "permissions": ["tabs"],
+    "permissions": ["tabs", "storage"],
     "background": {
         "service_worker": "service-worker.js",
         "type": "module"
