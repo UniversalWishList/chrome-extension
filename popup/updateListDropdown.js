@@ -1,15 +1,20 @@
 /**
- * Get the wish lists stored in memory
+ * Tell the service worker to fetch the wish lists from the server.
+ * Note that fetching continues after this function finishes.
 */
-async function getWishLists() {
-    // stubbed out getLists function
+async function triggerFetchWishLists() {
     try {
         const response = await chrome.runtime.sendMessage({action: 'fetchWishLists'});
-        console.log(response);
+        console.log(response); //DEBUG
     } catch (error) {
-        console.error('Message sending failed:', error);
+        console.error('Failed to send message to service worker:', error);
     }
+}
 
+/**
+ * Get the wish lists stored in memory and return them.
+*/
+async function getWishLists() {
     const wishLists = [];
 
     // push fetched wish lists to the list
@@ -20,6 +25,9 @@ async function getWishLists() {
     return wishLists;
 }
 
+/**
+ * Update the dropdown in the HTML page with the correct list of wish lists.
+*/
 async function updateDropdown() {
     // get the dropdown menu from the HTML DOM
     const dropdown = document.getElementById('list-select');
