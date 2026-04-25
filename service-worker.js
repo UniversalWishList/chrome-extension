@@ -2,15 +2,17 @@
  * Fetch a list of the user's wish lists from the server and store them in memory.
  */
 async function fetchWishLists() {
-    console.log("Fetching wish lists from the server."); //DEBUG
+    // make fetch request for wish lists to the server
     await new Promise(resolve => setTimeout(resolve, 2000));  // STUBBED
     let lists = {
         1: 'birthday',
         2: 'mom',
         3: 'christmas'
     }; //STUBBED
-    console.log("Storing wish lists in Chrome storage."); //DEBUG
+
+    // store fetched wish lists in memory
     await chrome.storage.session.set({wishLists: lists})
+
     // alert the pop-up that new wish lists have been fetched and stored
     await chrome.runtime.sendMessage({action: 'wishListsFetched'});
 }
@@ -25,7 +27,7 @@ chrome.runtime.onMessage.addListener(async function(message, sender, sendRespons
     if (message.action === 'fetchWishLists') {
         // send response that fetching is occurring
         // TODO: add checks that fetching can occur (API key & endpoint are accessible)
-        sendResponse({status: "fetching"});
+        sendResponse({status: 'fetching'});
         // fetch wish lists from the server
         fetchWishLists();
         return true;

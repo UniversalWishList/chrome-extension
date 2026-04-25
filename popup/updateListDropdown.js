@@ -3,9 +3,14 @@
  * Note that fetching continues after this function finishes.
  */
 async function triggerFetchWishLists() {
+    console.log("Triggering the service worker to fetch wish lists from the server.");
     try {
         const response = await chrome.runtime.sendMessage({action: 'fetchWishLists'});
-        console.log(response); //DEBUG
+        // check response
+        if (response.status === 'fetching')
+            console.log(`Received response '${response.status}' from service worker.`);
+        else
+            throw new Error(`Got response '${response.status}'.`);
     } catch (error) {
         console.error('Failed to send message to service worker:', error);
     }
@@ -30,6 +35,8 @@ async function getWishLists() {
  * Update the dropdown in the HTML page with the list of wish lists from memory.
  */
 async function updateListDropdown() {
+    console.log("Updating the wish list dropdown from memory.");
+
     // get the dropdown menu from the HTML DOM
     const dropdown = document.getElementById('list-select');
 
@@ -66,6 +73,7 @@ memory will be accurate the next time the user opens the pop-up window, which th
 // register a listener for when messages are sent from the service worker
 chrome.runtime.onMessage.addListener(async function(message, sender, sendResponse) {
     if (message.action === 'wishListsFetched') {
+        console.log(`Received '${message.action}' message from service worker.`);
         // update wish list dropdown
         updateListDropdown();
         return true;
@@ -74,6 +82,7 @@ chrome.runtime.onMessage.addListener(async function(message, sender, sendRespons
         return;
     }
 });
+console.log("Registered listener for service worker 'wishListFetched' messages.");
 
 // trigger the service worker to fetch wish lists from the server
 triggerFetchWishLists()
