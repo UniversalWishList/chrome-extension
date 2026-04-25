@@ -1,5 +1,15 @@
+/**
+ * Get the wish lists stored in memory
+*/
 async function getWishLists() {
     // stubbed out getLists function
+    try {
+        const response = await chrome.runtime.sendMessage({greeting: "hello"});
+        console.log(response);
+    } catch (error) {
+        console.error('Message sending failed:', error);
+    }
+
     const wishLists = [];
 
     // push fetched wish lists to the list
@@ -15,7 +25,7 @@ async function updateDropdown() {
     const dropdown = document.getElementById('list-select');
 
     // get the wish lists from the server
-    wishLists = await getWishLists();
+    const wishLists = await getWishLists();
 
     // replace options with wish lists fetched from the server
     while (dropdown.options.length > 0) {
