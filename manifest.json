@@ -2,7 +2,11 @@
     "name": "Universal Wish List",
     "version": "1.0",
     "description": "An extension for adding items to lists in Universal Wish List",
-    "permissions": ["tabs"],
+    "permissions": ["tabs", "storage"],
+    "host_permissions": [
+    "http://192.168.1.181:3280/*",
+    "http://localhost:3280/*"
+    ],
     "background": {
         "service_worker": "service-worker.js"
     },
@@ -10,5 +14,6 @@
         "default_popup": "popup/popup.html",
         "default_icon": "icon.png"
     },
+    "options_page": "options/options.html",
     "manifest_version": 3
 }
