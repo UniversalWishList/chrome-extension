@@ -28,7 +28,7 @@ async function getWishLists() {
 /**
  * Update the dropdown in the HTML page with the correct list of wish lists.
 */
-async function updateDropdown() {
+async function updateListDropdown() {
     // get the dropdown menu from the HTML DOM
     const dropdown = document.getElementById('list-select');
 
@@ -47,6 +47,21 @@ async function updateDropdown() {
     }
 }
 
+/*
+This script runs every time the pop-up window is opened. When it runs, the following things happen:
+1. The script registers to receive messages so that the list dropdown can be updated if the service
+worker sends a message that new wish lists have been fetched.
+2. The service worker is triggered to fetch wish lists from the server so that the wish lists the user
+looks at will be up-to-date. The service worker is the process that fetches the lists so that fetching
+continues properly if the pop-up window closes.
+3. The list dropdown is updated according to the current wish lists stored in memory. These will usually
+be accurate, but sometimes there may have been a change on the server not yet reflected locally. This
+is fine because the service worker is already fetching the up-to-date lists, and the dropdown will
+be updated by the listener once the lists have been fetched. This will probably happen before the user
+even clicks the dropdown, so everything will be accurate. If all else fails, the lists stored in
+memory will be accurate the next time the user opens the pop-up window, which this script pulls from.
+*/
+
 console.log("Attempting to update the dropdown list from the server.");
 
-updateDropdown();
+updateListDropdown();
