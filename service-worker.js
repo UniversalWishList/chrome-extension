@@ -12,7 +12,7 @@ async function fetchWishLists() {
     console.log("Storing wish lists in Chrome storage."); //DEBUG
     await chrome.storage.session.set({wishLists: lists})
     // alert the pop-up that new wish lists have been fetched and stored
-    console.log("Stored wishlists as 'wishLists'."); //STUBBED
+    await chrome.runtime.sendMessage({action: 'wishListsFetched'});
 }
 
 // register a listener for when the extension is installed

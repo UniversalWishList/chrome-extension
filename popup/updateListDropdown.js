@@ -22,7 +22,6 @@ async function getWishLists() {
     } catch (error) {
         wishListsData = {} //STUBBED
     }
-    console.log(wishListsData); //DEBUG
 
     return wishListsData;
 }
@@ -68,10 +67,10 @@ memory will be accurate the next time the user opens the pop-up window, which th
 chrome.runtime.onMessage.addListener(async function(message, sender, sendResponse) {
     if (message.action === 'wishListsFetched') {
         // update wish list dropdown
-        console.log("Updating the wish list dropdown."); //STUBBED
+        updateListDropdown();
         return true;
     } else {
-        console.log("Received unexpected message:", message);
+        console.log("Received unexpected message:", message); //DEBUG
         return;
     }
 });
