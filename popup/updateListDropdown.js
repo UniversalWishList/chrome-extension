@@ -26,7 +26,7 @@ async function getWishLists() {
 }
 
 /**
- * Update the dropdown in the HTML page with the correct list of wish lists.
+ * Update the dropdown in the HTML page with the list of wish lists from memory.
 */
 async function updateListDropdown() {
     // get the dropdown menu from the HTML DOM
@@ -62,6 +62,20 @@ even clicks the dropdown, so everything will be accurate. If all else fails, the
 memory will be accurate the next time the user opens the pop-up window, which this script pulls from.
 */
 
-console.log("Attempting to update the dropdown list from the server.");
+// register a listener for when messages are sent from the service worker
+chrome.runtime.onMessage.addListener(async function(message, sender, sendResponse) {
+    if (message.action === 'wishListsFetched') {
+        // update wish list dropdown
+        console.log("Updating the wish list dropdown."); //STUBBED
+        return true;
+    } else {
+        console.log("Received unexpected message:", message);
+        return;
+    }
+});
 
+// trigger the service worker to fetch wish lists from the server
+triggerFetchWishLists()
+
+// update the wish list dropdown from memory
 updateListDropdown();

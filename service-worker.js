@@ -1,8 +1,11 @@
+
+
 // register a listener for when the extension is installed
 chrome.runtime.onInstalled.addListener(() => {
     console.log("Installed the Universal Wish List extension.");
 });
 
+// register a listener for when messages are sent from other parts of the extension
 chrome.runtime.onMessage.addListener(async function(message, sender, sendResponse) {
 //   const response = await fetch('https://example.com');
 //   if (!response.ok) {
@@ -17,7 +20,7 @@ chrome.runtime.onMessage.addListener(async function(message, sender, sendRespons
         sendResponse({status: "fetching"});
         return true;
     } else {
-        console.log("Received unexpected message.");
+        console.log("Received unexpected message:", message);
         return;
     }
 });
