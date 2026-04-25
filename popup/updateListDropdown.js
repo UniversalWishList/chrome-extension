@@ -37,6 +37,12 @@ async function updateDropdown() {
         newOption.text = wishLists[i];
         dropdown.appendChild(newOption);
     }
+    
+    // pre-select the default list from settings
+    const { defaultList } = await chrome.storage.sync.get('defaultList');
+      if (defaultList) {
+          dropdown.value = defaultList;
+    }
 }
 
 console.log("Attempting to update the dropdown list from the server.");

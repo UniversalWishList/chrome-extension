@@ -14,5 +14,11 @@
             <option value="option2">Option 2</option>
         </select>
         <script src="updateListDropdown.js" type="module"></script>  <!-- run the updateListDropdown.js script -->
+        <br>                                                                                           <button type="button" id="open-settings">Settings</button>
+        <script>
+            document.getElementById('open-settings').addEventListener('click', function () {
+                chrome.runtime.openOptionsPage();
+            });
+        </script>
     </body>
 </html>

@@ -4,20 +4,23 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 chrome.runtime.onMessage.addListener(async function(message, sender, sendResponse) {
-//   const response = await fetch('https://example.com');
-//   if (!response.ok) {
-//     // rejects the promise returned by `async function`.
-//     throw new Error(`Fetch failed: ${response.status}`);
-//   }
-//   // resolves the promise returned by `async function`.
-//   return {statusCode: response.status};
     if (message.action === 'fetchWishLists') {
-        // fetch wish lists from the server
-        console.log("Fetching wish lists from the server.");
-        sendResponse({status: "fetching"});
-        return true;
-    } else {
-        console.log("Received unexpected message.");
-        return;
-    }
+          console.log("Fetching wish lists from the server.");
+          sendResponse({status: "fetching"});
+
+          const { apiUrl } = await chrome.storage.sync.get('apiUrl');
+          if (!apiUrl) {
+              console.warn("No API URL set. Configure it in Settings.");
+              return true;
+          }
+
+          const response = await fetch(apiUrl);
+          if (!response.ok) {
+              throw new Error(`Fetch failed: ${response.status}`);
+          }
+          return true;
+      } else {
+          console.log("Received unexpected message.");
+          return;
+      }
 });
