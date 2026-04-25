@@ -15,13 +15,16 @@ async function triggerFetchWishLists() {
  * Get the wish lists stored in memory and return them.
  */
 async function getWishLists() {
-    let wishLists = {
-        1: 'birthday',
-        2: 'mom',
-        3: 'christmas'
-    };
+    // try to fetch wish list data from memory
+    let wishListsData;
+    try {
+        wishListsData = (await chrome.storage.session.get(['wishLists'])).wishLists;
+    } catch (error) {
+        wishListsData = {} //STUBBED
+    }
+    console.log(wishListsData); //DEBUG
 
-    return wishLists;
+    return wishListsData;
 }
 
 /**

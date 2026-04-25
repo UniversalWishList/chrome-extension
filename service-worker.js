@@ -4,6 +4,15 @@
 async function fetchWishLists() {
     console.log("Fetching wish lists from the server."); //DEBUG
     await new Promise(resolve => setTimeout(resolve, 2000));  // STUBBED
+    let lists = {
+        1: 'birthday',
+        2: 'mom',
+        3: 'christmas'
+    }; //STUBBED
+    console.log("Storing wish lists in Chrome storage."); //DEBUG
+    await chrome.storage.session.set({wishLists: lists})
+    // alert the pop-up that new wish lists have been fetched and stored
+    console.log("Stored wishlists as 'wishLists'."); //STUBBED
 }
 
 // register a listener for when the extension is installed
@@ -13,17 +22,12 @@ chrome.runtime.onInstalled.addListener(() => {
 
 // register a listener for when messages are sent from other parts of the extension
 chrome.runtime.onMessage.addListener(async function(message, sender, sendResponse) {
-//   const response = await fetch('https://example.com');
-//   if (!response.ok) {
-//     // rejects the promise returned by `async function`.
-//     throw new Error(`Fetch failed: ${response.status}`);
-//   }
-//   // resolves the promise returned by `async function`.
-//   return {statusCode: response.status};
     if (message.action === 'fetchWishLists') {
-        // fetch wish lists from the server
-        console.log("Fetching wish lists from the server."); //STUBBED
+        // send response that fetching is occurring
+        // TODO: add checks that fetching can occur (API key & endpoint are accessible)
         sendResponse({status: "fetching"});
+        // fetch wish lists from the server
+        fetchWishLists();
         return true;
     } else {
         console.log("Received unexpected message:", message);
