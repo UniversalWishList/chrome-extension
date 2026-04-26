@@ -3,7 +3,7 @@ name: Chrome Extension Testing
 on:
   pull_request:
   push:
-    branches: [CI]
+    branches: [main]
 
 jobs:
   test:
