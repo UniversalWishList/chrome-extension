@@ -1,13 +1,16 @@
 // everything below handles storing an API key within the "API Key input field and the "Save API Key button logic"
 
 //this line of code with '$' is a shortcut for getting elements by id like $("saveApiKey") instead of manually calling:
-//"document.getElementById("apiKeyStatus")"
+//"document.getElementById("saveApiKey")"
 const $ = (id) => document.getElementById(id);
 
 // retrieving a saved APIkey from Chrome Storage to check if a user already entered and saved one
 chrome.storage.local.get("apiKey", ({ apiKey }) => {
     if (apiKey) {
-        // if a user has already entered an api key
+        //SANITY CHECKER CHECKING TO SEE IF A API KEY SAVED PRIOR TO CHROME STORAGE IS VISIBLE IN THE INPUT FIELD
+        // basically if you close the extension and reopen it the idea is that the api key should still be visible in the "api key input field"
+        // This is to make sure an api key saved to storage is actually saved.
+        //  if a user has already entered an api key
         // the api key input box should already have the api key stored (may be read as "......")
         $("apiKey").value = apiKey;
     }
