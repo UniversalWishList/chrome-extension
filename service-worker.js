@@ -2,16 +2,49 @@
  * Fetch a list of the user's wish lists from the server and store them in memory.
  * Requires the user's API key and endpoint to be accessible.
  */
+
+ // reference the URL to the Wish List web application actively running
+const API_BASE_URL = "http://192.168.1.181:3280";
+
+async function getSavedApiKey() {
+    // fetching the user's saved apikey
+    const { apiKey } = await chrome.storage.local.get("apiKey");
+
+    if (!apiKey) {
+        throw new Error("No API key saved.");
+    }
+
+    return apiKey;
+}
+
 async function fetchWishLists() {
     // make fetch request for wish lists to the server
-    await new Promise(resolve => setTimeout(resolve, 5000));  // STUBBED
+    // fetching a user's API key
+    const apiKey = await getSavedApiKey();
+    // await new Promise(resolve => setTimeout(resolve, 5000));  // STUBBED
+    // Making a GET call to the server
+    const response = await fetch(`${API_BASE_URL}/api/lists`, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${apiKey}`,
+            "Content-Type": "application/json",
+        },
+    });
+    // returning the user's list(s) as json
+    const listsFromApi = await response.json();
+    // convert API list data into dictionary of list IDs to names
+    const lists = {};
+
+    for (const list of listsFromApi) {
+        lists[list.id] = list.name;
+    }
 
     // extract dictionary of wish list IDs to names from fetch request
-    let lists = {
-        1: 'birthday',
-        2: 'mom',
-        3: 'christmas'
-    }; //STUBBED
+    //let lists = {
+    //    1: 'birthday',
+    //    2: 'mom',
+    //    3: 'christmas'
+    //}; //STUBBED
 
     // store fetched wish lists in memory
     await chrome.storage.session.set({wishLists: lists})
