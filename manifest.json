@@ -8,7 +8,8 @@
     "http://localhost:3280/*"
     ],
     "background": {
-        "service_worker": "service-worker.js"
+        "service_worker": "service-worker.js",
+        "type": "module"
     },
     "action": {
         "default_popup": "popup/popup.html",

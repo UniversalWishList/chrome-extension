@@ -1,34 +1,91 @@
-async function getWishLists() {
-    // stubbed out getLists function
-    const wishLists = [];
-
-    // push fetched wish lists to the list
-    wishLists.push('birthday');
-    wishLists.push('mom');
-    wishLists.push('christmas');
-
-    return wishLists;
+/**
+ * Tell the service worker to fetch the wish lists from the server.
+ * Note that fetching continues after this function finishes.
+ */
+async function triggerFetchWishLists() {
+    console.log("Triggering the service worker to fetch wish lists from the server.");
+    try {
+        const response = await chrome.runtime.sendMessage({action: 'fetchWishLists'});
+        // check response
+        if (response.status === 'fetching')
+            console.log(`Received response '${response.status}' from service worker.`);
+        else
+            throw new Error(`Got response '${response.status}'.`);
+    } catch (error) {
+        console.error('Failed to send message to service worker:', error);
+    }
 }
 
-async function updateDropdown() {
+/**
+ * Get the wish lists stored in memory and return them.
+ */
+async function getWishLists() {
+    // try to fetch wish list data from memory
+    let wishListsData;
+    try {
+        wishListsData = (await chrome.storage.session.get(['wishLists'])).wishLists;
+    } catch (error) {
+        wishListsData = {}
+    }
+
+    return wishListsData;
+}
+
+/**
+ * Update the dropdown in the HTML page with the list of wish lists from memory.
+ */
+async function updateListDropdown() {
+    console.log("Updating the wish list dropdown from memory.");
+
     // get the dropdown menu from the HTML DOM
     const dropdown = document.getElementById('list-select');
 
-    // get the wish lists from the server
-    wishLists = await getWishLists();
+    // get the wish lists from memory
+    const wishLists = await getWishLists();
 
-    // replace options with wish lists fetched from the server
+    // replace options with wish lists fetched from memory
     while (dropdown.options.length > 0) {
         dropdown.remove(0);
     }
-    for (var i = 0; i < wishLists.length; i++) {
+    for (const id in wishLists) {
         let newOption = document.createElement('option');
-        newOption.value = wishLists[i];
-        newOption.text = wishLists[i];
+        newOption.value = id;
+        newOption.text = wishLists[id];
         dropdown.appendChild(newOption);
     }
 }
 
-console.log("Attempting to update the dropdown list from the server.");
+/*
+This script runs every time the pop-up window is opened. When it runs, the following things happen:
+1. The script registers to receive messages so that the list dropdown can be updated if the service
+worker sends a message that new wish lists have been fetched.
+2. The service worker is triggered to fetch wish lists from the server so that the wish lists the user
+looks at will be up-to-date. The service worker is the process that fetches the lists so that fetching
+continues properly if the pop-up window closes.
+3. The list dropdown is updated according to the current wish lists stored in memory. These will usually
+be accurate, but sometimes there may have been a change on the server not yet reflected locally. This
+is fine because the service worker is already fetching the up-to-date lists, and the dropdown will
+be updated by the listener once the lists have been fetched. This will probably happen before the user
+even clicks the dropdown, so everything will be accurate. If all else fails, the lists stored in
+memory will be accurate the next time the user opens the pop-up window, which this script pulls from.
+*/
 
-updateDropdown();
+// register a listener for when messages are sent from the service worker
+chrome.runtime.onMessage.addListener(async function(message, sender, sendResponse) {
+    if (message.action === 'wishListsFetched') {
+        console.log(`Received '${message.action}' message from service worker.`);
+        // update wish list dropdown
+        updateListDropdown();
+        return true;
+    } else {
+        console.log("Received unexpected message:", message); //DEBUG
+        return;
+    }
+});
+console.log("Registered listener for service worker 'wishListFetched' messages.");
+
+// trigger the service worker to fetch wish lists from the server
+triggerFetchWishLists()
+
+// update the wish list dropdown from memory
+updateListDropdown();

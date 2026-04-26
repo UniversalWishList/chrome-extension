@@ -28,3 +28,5 @@ In `chrome://extensions` there is a reload button on the panel for this extensio
 
 - [Hello World extension | Get started | Chrome for Developers](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world)
 - [Permissions | Chrome for Developers](https://developer.chrome.com/docs/extensions/reference/permissions-list)
+- [Message passing | Chrome for Developers](https://developer.chrome.com/docs/extensions/develop/concepts/messaging)
+- [Handle events with service workers | Get started | Chrome for Developers](https://developer.chrome.com/docs/extensions/get-started/tutorial/service-worker-events)
