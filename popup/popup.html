@@ -21,14 +21,24 @@
             </select>
             <script src="updateListDropdown.js" type="module"></script>  <!-- run the updateListDropdown.js script -->
         </div>
-        <br><br>
+        <br>
         <div id="settingsSection" style="display: none;">
+            <!-- field to enter API key -->
             <label>
                 API key:
-            <input id="apiKey" type="password" autocomplete="off">
+                <input id="apiKey" type="password" autocomplete="off">
             </label>
             <button type="button" id="saveApiKey">Save API Key</button>
             <span id="apiKeyStatus"></span>
+            <br><br>
+            <!-- field to enter host address -->
+            <label>
+                Host address:
+                <input id="hostAddress" type="url" autocomplete="off">
+            </label>
+            <button type="button" id="saveHostAddress">Save Host Address</button>
+            <span id="hostAddressStatus"></span>
+            <!-- load the script to handle input -->
             <script src="popupStorage.js"></script>
         </div>
         <script src="popupTabs.js"></script>
