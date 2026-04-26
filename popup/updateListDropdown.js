@@ -25,7 +25,7 @@ async function getWishLists() {
     try {
         wishListsData = (await chrome.storage.session.get(['wishLists'])).wishLists;
     } catch (error) {
-        wishListsData = {} //STUBBED
+        wishListsData = {}
     }
 
     return wishListsData;
@@ -40,10 +40,10 @@ async function updateListDropdown() {
     // get the dropdown menu from the HTML DOM
     const dropdown = document.getElementById('list-select');
 
-    // get the wish lists from the server
+    // get the wish lists from memory
     const wishLists = await getWishLists();
 
-    // replace options with wish lists fetched from the server
+    // replace options with wish lists fetched from memory
     while (dropdown.options.length > 0) {
         dropdown.remove(0);
     }
