@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // after the script runs, disable the button and change its text
-        // this.disabled = true;
-        // this.textContent = 'Added to list';
+        this.disabled = true;
+        this.textContent = 'Added to list';
     });
 });
