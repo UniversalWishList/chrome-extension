@@ -1,13 +1,9 @@
 /**
- * Fetch a list of the user's wish lists from the server and store them in memory.
- * Requires the user's API key and endpoint to be accessible.
+ * Get the user's saved API key from Chrome local storage and return it.
+ * @returns {string} The API key
  */
-
- // reference the URL to the Wish List web application actively running
-const API_BASE_URL = "http://192.168.1.181:3280";
-
 async function getSavedApiKey() {
-    // fetching the user's saved apikey
+    // get the API key from Chrome local storage
     const { apiKey } = await chrome.storage.local.get("apiKey");
 
     if (!apiKey) {
@@ -17,34 +13,46 @@ async function getSavedApiKey() {
     return apiKey;
 }
 
+/**
+ * Get the user's saved host address from Chrome local storage and return it.
+ * @returns {string} The host address
+ */
+async function getSavedHostAddress() {
+    // get the host address from Chrome local storage
+    const { hostAddress } = await chrome.storage.local.get("hostAddress");
+
+    if (!hostAddress) {
+        throw new Error("No host address saved.");
+    }
+
+    return hostAddress;
+}
+
+/**
+ * Fetch a list of the user's wish lists from the server and store them in memory.
+ * Requires the user's API key and endpoint to be accessible.
+ */
 async function fetchWishLists() {
-    // make fetch request for wish lists to the server
-    // fetching a user's API key
     const apiKey = await getSavedApiKey();
-    // await new Promise(resolve => setTimeout(resolve, 5000));  // STUBBED
-    // Making a GET call to the server
-    const response = await fetch(`${API_BASE_URL}/api/lists`, {
+    const hostAddress = await getSavedHostAddress();
+
+    // make a GET call to the server
+    const response = await fetch(`${hostAddress}/api/lists`, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${apiKey}`,
             "Content-Type": "application/json",
         },
     });
-    // returning the user's list(s) as json
+
+    // return the user's list(s) as json
     const listsFromApi = await response.json();
+
     // convert API list data into dictionary of list IDs to names
     const lists = {};
-
     for (const list of listsFromApi) {
         lists[list.id] = list.name;
     }
-
-    // extract dictionary of wish list IDs to names from fetch request
-    //let lists = {
-    //    1: 'birthday',
-    //    2: 'mom',
-    //    3: 'christmas'
-    //}; //STUBBED
 
     // store fetched wish lists in memory
     await chrome.storage.session.set({wishLists: lists})
@@ -60,16 +68,11 @@ async function fetchWishLists() {
  * @param {string} wishList The wish list to add the URL to.
  */
 async function addItemToWishList(url, wishList) {
-    // construct post request to the wish list server
-    // getting the user's api key to make the post call
     const apiKey = await getSavedApiKey();
-    //let postRequest = `Post request with ${url} and ${wishList}`; //STUBBED
-
-    // make post request to the server with the URL and wish list
-    //console.log("Making post request with post request:", postRequest); //STUBBED
+    const hostAddress = await getSavedHostAddress();
 
     // make POST request to add item to selected wish list
-    const response = await fetch(`${API_BASE_URL}/api/lists/${wishList}/items`, {
+    const response = await fetch(`${hostAddress}/api/lists/${wishList}/items`, {
         method: "POST",
         headers: {
             "Authorization": `Bearer ${apiKey}`,
