@@ -164,7 +164,7 @@ test('Clicking the button changes the text of the button', async () => {
 
     // check that the button now has different text
     const newButtonText = await popupPage.evaluate(() => {
-        const btn = document.querySelector('button');
+        const btn = document.getElementById('addItemToList')
         return btn.innerText;
     });
     expect(buttonText).not.toBe(newButtonText);
@@ -175,7 +175,7 @@ test('Clicking the button disables it', async () => {
 
     // check that the button is enabled
     const buttonDisabled = await popupPage.evaluate(() => {
-        const btn = document.querySelector('button');
+        const btn = document.getElementById('addItemToList')
         return btn.disabled;
     });
     expect(buttonDisabled).toBeFalsy();
@@ -186,7 +186,7 @@ test('Clicking the button disables it', async () => {
 
     // check that the button is disabled
     const newButtonDisabled = await popupPage.evaluate(() => {
-        const btn = document.querySelector('button');
+        const btn = document.getElementById('addItemToList')
         return btn.disabled;
     });
     expect(newButtonDisabled).toBeTruthy();
