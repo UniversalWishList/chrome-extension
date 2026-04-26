@@ -61,10 +61,25 @@ async function fetchWishLists() {
  */
 async function addItemToWishList(url, wishList) {
     // construct post request to the wish list server
-    let postRequest = `Post request with ${url} and ${wishList}`; //STUBBED
+    // getting the user's api key to make the post call
+    const apiKey = await getSavedApiKey();
+    //let postRequest = `Post request with ${url} and ${wishList}`; //STUBBED
 
     // make post request to the server with the URL and wish list
-    console.log("Making post request with post request:", postRequest); //STUBBED
+    //console.log("Making post request with post request:", postRequest); //STUBBED
+
+    // make POST request to add item to selected wish list
+    const response = await fetch(`${API_BASE_URL}/api/lists/${wishList}/items`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${apiKey}`,
+            "Content-Type": "application/json",
+        },
+        // get URL in json formatting for API calling purposes
+        body: JSON.stringify({
+            url: url,
+        }),
+    });
 }
 
 // register a listener for when the extension is installed
