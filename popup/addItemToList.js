@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 throw new Error(`Got response '${response.status}'.`);
         } catch (error) {
             console.error('Failed to send message to service worker:', error);
+            return;
         }
 
         // after the script runs, disable the button and change its text

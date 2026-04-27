@@ -170,7 +170,7 @@ test('Clicking the button changes the text of the button', async () => {
     expect(buttonText).not.toBe(newButtonText);
 });
 
-test('Clicking the button disables it', async () => {
+test('Clicking the button without an API key or host address does not disable it', async () => {
     const popupPage = await getPopupPage(worker, browser);
 
     // check that the button is enabled
@@ -184,12 +184,12 @@ test('Clicking the button disables it', async () => {
     await popupPage.waitForSelector('button[id="addItemToList"]');
     await popupPage.click('button[id="addItemToList"]');
 
-    // check that the button is disabled
+    // check that the button is still enabled
     const newButtonDisabled = await popupPage.evaluate(() => {
         const btn = document.getElementById('addItemToList')
         return btn.disabled;
     });
-    expect(newButtonDisabled).toBeTruthy();
+    expect(newButtonDisabled).toBeFalsy();
 });
 
 test('Clicking the button logs the current URL', async () => {
