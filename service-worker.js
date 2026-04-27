@@ -94,6 +94,22 @@ chrome.runtime.onInstalled.addListener(() => {
 chrome.runtime.onMessage.addListener(async function(message, sender, sendResponse) {
     if (message.action === 'fetchWishLists') {
         // TODO: add checks that fetching can occur (API key & endpoint are accessible)
+        let apiKey;
+        let hostAddress;
+
+        // check that the API key and host address are accessible
+        try {
+            apiKey = getSavedApiKey();
+        } catch (error) {
+            console.error("Failed to get saved API key:", error);
+            sendResponse({status: 'failed'});
+        }
+        try {
+            hostAddress = getSavedHostAddress();
+        } catch (error) {
+            console.error("Failed to get saved host address:", error);
+            sendResponse({status: 'failed'});
+        }
 
         // send response that fetching is occurring
         sendResponse({status: 'fetching'});
@@ -103,6 +119,22 @@ chrome.runtime.onMessage.addListener(async function(message, sender, sendRespons
         return true;
     } else if (message.action === 'addItemToWishList') {
         // TODO: add checks that adding can occur (API key & endpoint are accessible)
+        let apiKey;
+        let hostAddress;
+
+        // check that the API key and host address are accessible
+        try {
+            apiKey = getSavedApiKey();
+        } catch (error) {
+            console.error("Failed to get saved API key:", error);
+            sendResponse({status: 'failed'});
+        }
+        try {
+            hostAddress = getSavedHostAddress();
+        } catch (error) {
+            console.error("Failed to get saved host address:", error);
+            sendResponse({status: 'failed'});
+        }
 
         // send response that adding is occurring
         sendResponse({status: 'adding'});
