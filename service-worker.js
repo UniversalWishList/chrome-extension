@@ -1,10 +1,10 @@
 /**
- * Get the user's saved API key from Chrome local storage and return it.
+ * Get the user's saved API key from local storage and return it.
  * @returns {string} The user's API key.
  */
 async function getSavedApiKey() {
-    // get the API key from Chrome local storage
-    const { apiKey } = await chrome.storage.local.get("apiKey");
+    // get the API key from local storage
+    const { apiKey } = await browser.storage.local.get("apiKey");
 
     if (!apiKey) {
         throw new Error("No API key saved.");
@@ -14,12 +14,12 @@ async function getSavedApiKey() {
 }
 
 /**
- * Get the user's saved host address from Chrome local storage and return it.
+ * Get the user's saved host address from local storage and return it.
  * @returns {string} The user's host address.
  */
 async function getSavedHostAddress() {
-    // get the host address from Chrome local storage
-    const { hostAddress } = await chrome.storage.local.get("hostAddress");
+    // get the host address from local storage
+    const { hostAddress } = await browser.storage.local.get("hostAddress");
 
     if (!hostAddress) {
         throw new Error("No host address saved.");
@@ -54,10 +54,10 @@ async function fetchWishLists(apiKey, hostAddress) {
     }
 
     // store fetched wish lists in memory
-    await chrome.storage.session.set({wishLists: lists})
+    await browser.storage.session.set({wishLists: lists})
 
     // alert the pop-up that new wish lists have been fetched and stored
-    await chrome.runtime.sendMessage({action: 'wishListsFetched'});
+    await browser.runtime.sendMessage({action: 'wishListsFetched'});
 }
 
 /**
@@ -84,12 +84,12 @@ async function addItemToWishList(url, wishList, apiKey, hostAddress) {
 }
 
 // register a listener for when the extension is installed
-chrome.runtime.onInstalled.addListener(() => {
+browser.runtime.onInstalled.addListener(() => {
     console.log("Installed the Universal Wish List extension.");
 });
 
 // register a listener for when messages are sent from other parts of the extension
-chrome.runtime.onMessage.addListener(async function(message, sender, sendResponse) {
+browser.runtime.onMessage.addListener(async function(message, sender, sendResponse) {
     if (message.action === 'fetchWishLists') {
         let apiKey;
         let hostAddress;

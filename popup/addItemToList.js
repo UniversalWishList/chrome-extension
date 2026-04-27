@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     btn.addEventListener('click', async function () {
         // get the current url and selected list
-        const [tab] = await chrome.tabs.query({active: true, currentWindow: true});
+        const [tab] = await chrome.tabs.query({active: true, currentWindow: true});  // fails tests for some reason with 'browser.tabs.query...'
         const dropdown = document.getElementById('list-select');
         console.log("Adding item to list from URL:", tab.url, "and wish list ID:", dropdown.value);
 
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // send a message to the service worker to add the item to the list
         try {
-            const response = await chrome.runtime.sendMessage(message);
+            const response = await browser.runtime.sendMessage(message);
             // check response
             if (response.status === 'adding')
                 console.log(`Received response '${response.status}' from service worker.`);
