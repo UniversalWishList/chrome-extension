@@ -5,16 +5,17 @@
 const $ = (id) => document.getElementById(id);
 
 // retrieving a saved APIkey from Chrome Storage to check if a user already entered and saved one
-chrome.storage.local.get("apiKey", ({ apiKey }) => {
-    if (apiKey) {
-        //SANITY CHECKER CHECKING TO SEE IF A API KEY SAVED PRIOR TO CHROME STORAGE IS VISIBLE IN THE INPUT FIELD
-        // basically if you close the extension and reopen it the idea is that the api key should still be visible in the "api key input field"
-        // This is to make sure an api key saved to storage is actually saved.
-        //  if a user has already entered an api key
-        // the api key input box should already have the api key stored (may be read as "......")
-        $("apiKey").value = apiKey;
-    }
-});
+// Solely Needed for debugging purposes
+// chrome.storage.local.get("apiKey", ({ apiKey }) => {
+//     if (apiKey) {
+//         //SANITY CHECKER CHECKING TO SEE IF A API KEY SAVED PRIOR TO CHROME STORAGE IS VISIBLE IN THE INPUT FIELD
+//         // basically if you close the extension and reopen it the idea is that the api key should still be visible in the "api key input field"
+//         // This is to make sure an api key saved to storage is actually saved.
+//         //  if a user has already entered an api key
+//         // the api key input box should already have the api key stored (may be read as "......")
+//         $("apiKey").value = apiKey;
+//     }
+// });
 
 // when the save button is clicked, get the API key from the input box (make sure to trim for any
 // whitespace so we just get the api key).
@@ -36,6 +37,12 @@ $("saveApiKey").addEventListener("click", async () => {
     setTimeout(() => {
         $("apiKeyStatus").textContent = "";
     }, 1500);
+});
+
+chrome.storage.local.get("hostAddress", ({ hostAddress }) => {
+    if (hostAddress) {
+        $("hostAddress").value = hostAddress;
+    }
 });
 
 // add an event listener for the 'saveHostAddress' button which runs the following function when
