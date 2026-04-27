@@ -1,6 +1,6 @@
 /**
  * Get the user's saved API key from Chrome local storage and return it.
- * @returns {string} The API key
+ * @returns {string} The user's API key.
  */
 async function getSavedApiKey() {
     // get the API key from Chrome local storage
@@ -15,7 +15,7 @@ async function getSavedApiKey() {
 
 /**
  * Get the user's saved host address from Chrome local storage and return it.
- * @returns {string} The host address
+ * @returns {string} The user's host address.
  */
 async function getSavedHostAddress() {
     // get the host address from Chrome local storage
@@ -31,11 +31,10 @@ async function getSavedHostAddress() {
 /**
  * Fetch a list of the user's wish lists from the server and store them in memory.
  * Requires the user's API key and endpoint to be accessible.
+ * @param {string} apiKey The user's API key.
+ * @param {string} hostAddress The user's host address.
  */
-async function fetchWishLists() {
-    const apiKey = await getSavedApiKey();
-    const hostAddress = await getSavedHostAddress();
-
+async function fetchWishLists(apiKey, hostAddress) {
     // make a GET call to the server
     const response = await fetch(`${hostAddress}/api/lists`, {
         method: "GET",
@@ -66,11 +65,10 @@ async function fetchWishLists() {
  * Requires the user's API key and endpoint to be accessible.
  * @param {string} url The URL of the item to add to a list.
  * @param {string} wishList The wish list to add the URL to.
+ * @param {string} apiKey The user's API key.
+ * @param {string} hostAddress The user's host address.
  */
-async function addItemToWishList(url, wishList) {
-    const apiKey = await getSavedApiKey();
-    const hostAddress = await getSavedHostAddress();
-
+async function addItemToWishList(url, wishList, apiKey, hostAddress) {
     // make POST request to add item to selected wish list
     const response = await fetch(`${hostAddress}/api/lists/${wishList}/items`, {
         method: "POST",
@@ -93,19 +91,18 @@ chrome.runtime.onInstalled.addListener(() => {
 // register a listener for when messages are sent from other parts of the extension
 chrome.runtime.onMessage.addListener(async function(message, sender, sendResponse) {
     if (message.action === 'fetchWishLists') {
-        // TODO: add checks that fetching can occur (API key & endpoint are accessible)
         let apiKey;
         let hostAddress;
 
         // check that the API key and host address are accessible
         try {
-            apiKey = getSavedApiKey();
+            apiKey = await getSavedApiKey();
         } catch (error) {
             console.error("Failed to get saved API key:", error);
             sendResponse({status: 'failed'});
         }
         try {
-            hostAddress = getSavedHostAddress();
+            hostAddress = await getSavedHostAddress();
         } catch (error) {
             console.error("Failed to get saved host address:", error);
             sendResponse({status: 'failed'});
@@ -114,23 +111,25 @@ chrome.runtime.onMessage.addListener(async function(message, sender, sendRespons
         // send response that fetching is occurring
         sendResponse({status: 'fetching'});
 
+        console.log("apiKey:", apiKey); //DEBUG
+        console.log("hostAddress:", hostAddress); //DEBUG
+
         // fetch wish lists from the server
-        await fetchWishLists();
+        await fetchWishLists(apiKey, hostAddress);
         return true;
     } else if (message.action === 'addItemToWishList') {
-        // TODO: add checks that adding can occur (API key & endpoint are accessible)
         let apiKey;
         let hostAddress;
 
         // check that the API key and host address are accessible
         try {
-            apiKey = getSavedApiKey();
+            apiKey = await getSavedApiKey();
         } catch (error) {
             console.error("Failed to get saved API key:", error);
             sendResponse({status: 'failed'});
         }
         try {
-            hostAddress = getSavedHostAddress();
+            hostAddress = await getSavedHostAddress();
         } catch (error) {
             console.error("Failed to get saved host address:", error);
             sendResponse({status: 'failed'});
@@ -140,7 +139,7 @@ chrome.runtime.onMessage.addListener(async function(message, sender, sendRespons
         sendResponse({status: 'adding'});
 
         // add url to the wish list on the server
-        await addItemToWishList(message.url, message.wishList);
+        await addItemToWishList(message.url, message.wishList, apiKey, hostAddress);
     } else {
         console.log("Received unexpected message:", message); //DEBUG
         return;
