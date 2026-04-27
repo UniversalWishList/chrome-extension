@@ -2,13 +2,11 @@
 
 This is the Google Chrome extension for Universal Wish List, which allows you to add items to your wish lists without leaving the shopping website.
 
-*Note: This extension is in development and currently stubs out any API access. Stubs output can be found in the console, accessible through the Inspect window for the extension.*
-
 ## Installation
 
 *Instructions taken from the [Chrome Hello World tutorial](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked).*
 
-1. Clone the repository (instructions to come).
+1. Clone the repository with `git clone https://github.com/UniversalWishList/chrome-extension.git`.
 2. Open Google Chrome and go to `chrome://extensions`.
 3. Enable Developer Mode by toggling the switch next to **Developer mode**.
 4. Click the **Load unpacked** button and select the directory where you cloned the repository.
