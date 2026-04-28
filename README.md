@@ -23,7 +23,7 @@ In `chrome://extensions` there is a reload button on the panel for this extensio
 - If there's an error, an **Error** button will show up in `chrome://extensions`. If you click it you can see details about the errors.
 
 ## Sources
-
+- [Wishlist image logo, credits go to "cmintey/wishlist"](https://github.com/cmintey/wishlist/blob/main/src/lib/assets/logo.png)
 - [Hello World extension | Get started | Chrome for Developers](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world)
 - [Permissions | Chrome for Developers](https://developer.chrome.com/docs/extensions/reference/permissions-list)
 - [Message passing | Chrome for Developers](https://developer.chrome.com/docs/extensions/develop/concepts/messaging)
