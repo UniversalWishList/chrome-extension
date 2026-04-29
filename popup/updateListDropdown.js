@@ -12,7 +12,7 @@ async function triggerFetchWishLists() {
         else
             throw new Error(`Got response '${response.status}'.`);
     } catch (error) {
-        console.error('Failed to send message to service worker:', error);
+        console.error('Got an error when sending message to service worker:', error);
     }
 }
 
